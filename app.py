@@ -15,7 +15,7 @@ def greet(name):
 
 @app.route('/hello1')
 def hello1():
-    response = make_response('HelloPeople\n')
+    response = make_response('Hello People\n')
     response.status_code = 202
     response.headers['content-type'] = 'text/plain'
     return response
