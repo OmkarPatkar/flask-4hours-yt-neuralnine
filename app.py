@@ -28,7 +28,7 @@ def index():
     elif request.method == 'POST':
         return 'you made a post request\n'
     else:
-        return 'you will never see this message\n'
+        return 'you will never see this message.\n'
 
 
 @app.route('/add/<int:num1>/<int:num2>')
