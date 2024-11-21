@@ -1,18 +1,21 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 
+# simple route
 @app.route('/hello')
 def hello():
     return 'hello people!\n'
 
 
+# pass string variable
 @app.route('/greet/<string:name>')
 def greet(name):
     return f'Hello {name}'
 
 
+# send response status code
 @app.route('/hello1')
 def hello1():
     response = make_response('Hello People!\n')
@@ -21,6 +24,7 @@ def hello1():
     return response
 
 
+# get , post methods
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
@@ -31,11 +35,13 @@ def index():
         return 'you will never see this message.\n'
 
 
+# pass int variable
 @app.route('/add/<int:num1>/<int:num2>')
 def add(num1, num2):
     return f'{num1} + {num2} = {num1 + num2}'
 
 
+# handle url parameters
 @app.route('/handle_url_params')
 def handle_url_params():
     if 'greeting' in request.args.keys() and 'name' in request.args.keys():
@@ -44,6 +50,39 @@ def handle_url_params():
         return f'{greeting}, {name}'
     else:
         return 'Some parameters are missing.'
+
+
+# templating
+@app.route('/template')
+def templating():
+    li = ['1', '2', '3', '4']
+    li1 = ['10', '20', '30', '40']
+    return render_template('index.html', li=li, li1=li1)
+
+
+# about page
+@app.route('/filters')
+def about():
+    text1 = 'Hello People'
+    return render_template('filters.html', text1=text1)
+
+
+# custom reverse filter
+@app.template_filter("reverse_string")
+def reverse_string(s):
+    return s[::-1]
+
+
+# custom repeat filter
+@app.template_filter('repeat')
+def repeat(s, times=2):
+    return s * times
+
+
+# custom alternatestring filter
+@app.template_filter('alternatestring')
+def alternatestring(s):
+    return ''.join([c.upper() if i % 2 == 0 else c.lower() for i, c in enumerate(s)])
 
 
 if __name__ == '__main__':

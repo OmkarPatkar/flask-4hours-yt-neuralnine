@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Filters Page{% endblock %}
+
+{% block content %}
+<p>Welcome to the filters page!!!</p>
+
+<h1>
+    Filters
+</h1>
+<p>Normal text : {{ text1 }}</p>
+<p>upper text : {{ text1|upper }}</p>
+<p>lower text : {{ text1|lower }}</p>
+<p>title text : {{ text1|title }}</p>
+<p>replace text : {{ text1|replace('l', 'L') }}</p>
+<p>reverse_string text : {{ text1|reverse_string }}</p>
+<p>repeat_string text : {{ text1|repeat }}</p>
+<p>alternatestring text : {{ text1|alternatestring }}</p>
+{% endblock %}
