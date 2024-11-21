@@ -3,6 +3,7 @@
 
 {% block content %}
 <p>Welcome to the page!!!</p>
+
 <ul>
     {% for item in li %}
     <li>{{ item }}</li>
@@ -11,7 +12,11 @@
 
 <ul>
     {% for item in li1 %}
-    <li %} %} 30 endif if item== style="color: red" {% {%>{{ item }}</li>
+    <li %} %} 30 endif if item== style="color: blue" {% {%>{{ item }}</li>
     {% endfor %}
 </ul>
+
+<a href="{{  url_for('filters')  }}">filters page</a>
+
 {% endblock %}
+

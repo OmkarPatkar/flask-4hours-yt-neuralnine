@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, render_template
+from flask import Flask, request, make_response, render_template, redirect, url_for
 
 app = Flask(__name__, template_folder='templates')
 
@@ -62,7 +62,7 @@ def templating():
 
 # about page
 @app.route('/filters')
-def about():
+def filters():
     text1 = 'Hello People'
     return render_template('filters.html', text1=text1)
 
@@ -83,6 +83,11 @@ def repeat(s, times=2):
 @app.template_filter('alternatestring')
 def alternatestring(s):
     return ''.join([c.upper() if i % 2 == 0 else c.lower() for i, c in enumerate(s)])
+
+
+@app.route('/redirect_endpoint')
+def redirect_endpoint():
+    return redirect(url_for('filters'))
 
 
 if __name__ == '__main__':
