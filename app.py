@@ -25,7 +25,7 @@ def hello1():
 
 
 # get , post methods
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/req', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
         return "you made a get request\n"
@@ -85,9 +85,25 @@ def alternatestring(s):
     return ''.join([c.upper() if i % 2 == 0 else c.lower() for i, c in enumerate(s)])
 
 
+# redirect endpoint
 @app.route('/redirect_endpoint')
 def redirect_endpoint():
     return redirect(url_for('filters'))
+
+
+# forms
+@app.route('/form', methods=['GET', 'POST'])
+def forms():
+    if request.method == 'GET':
+        return render_template('forms.html')
+    elif request.method == 'POST':
+        user = request.form['username']
+        passwd = request.form['password']
+
+        if user == 'patkar' and passwd == 'pd':
+            return 'yoooo'
+        else:
+            return 'booooooo'
 
 
 if __name__ == '__main__':
