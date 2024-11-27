@@ -1,5 +1,5 @@
 import pandas as pd
-from flask import Flask, request, make_response, render_template, redirect, url_for
+from flask import Flask, request, make_response, render_template, redirect, url_for, Response
 
 app = Flask(__name__, template_folder='templates')
 
@@ -152,6 +152,23 @@ def file_upload():
             return f"An error occurred while reading the Excel file: {str(e)}", 400
     else:
         return "Unsupported file type", 400
+
+
+# convert csv
+@app.route('/convert_csv', methods=['POST'])
+def convert_csv():
+    file = request.files['file']
+    print("File Content-Type:", file.content_type)
+
+    df = pd.read_excel(file)
+    response = Response(
+        df.to_csv(),
+        mimetype='text/csv',
+        headers={
+            'Content-Disposition': 'attachment; filename=result.csv'
+        }
+    )
+    return response
 
 
 if __name__ == '__main__':
