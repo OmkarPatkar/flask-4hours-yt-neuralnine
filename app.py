@@ -1,3 +1,4 @@
+import pandas as pd
 from flask import Flask, request, make_response, render_template, redirect, url_for
 
 app = Flask(__name__, template_folder='templates')
@@ -104,6 +105,53 @@ def forms():
             return 'yoooo'
         else:
             return 'booooooo'
+
+
+# file upload
+# @app.route('/file_upload', methods=['POST'])
+# def file_upload():
+#     file = request.files['file']
+#     print("File Content-Type:", file.content_type)
+#     print("File Name:", file.filename)
+#
+#     if file.content_type == 'text/plain':
+#         content = "content in the file is : " + file.read().decode()
+#         return content
+#     elif file.content_type in ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel']:
+#         df = pd.read_excel(file, engine='openpyxl')
+#         print("DataFrame Content:\n", df)
+#         return df.to_html()
+
+
+@app.route('/file_upload', methods=['POST'])
+def file_upload():
+    file = request.files['file']
+    print("File Content-Type:", file.content_type)
+
+    if file.content_type == 'text/plain':  # Plain text file
+        content = "Content in the file is: " + file.read().decode()
+        return content
+    elif file.content_type == 'text/csv':  # CSV file
+        try:
+            # Read CSV file
+            df = pd.read_csv(file)
+            print("DataFrame Content:\n", df)
+            return df.to_html()
+        except Exception as e:
+            return f"An error occurred while reading the CSV file: {str(e)}", 400
+    elif file.content_type in [
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel'
+    ]:  # Excel file
+        try:
+            # Read Excel file
+            df = pd.read_excel(file)
+            print("DataFrame Content:\n", df)
+            return df.to_html()
+        except Exception as e:
+            return f"An error occurred while reading the Excel file: {str(e)}", 400
+    else:
+        return "Unsupported file type", 400
 
 
 if __name__ == '__main__':
