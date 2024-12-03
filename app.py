@@ -5,7 +5,7 @@ import pandas as pd
 from flask import Flask, request, make_response, render_template, redirect, url_for, Response, send_from_directory, \
     jsonify
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
 
 
 # simple route
@@ -112,21 +112,6 @@ def forms():
 
 
 # file upload
-# @app.route('/file_upload', methods=['POST'])
-# def file_upload():
-#     file = request.files['file']
-#     print("File Content-Type:", file.content_type)
-#     print("File Name:", file.filename)
-#
-#     if file.content_type == 'text/plain':
-#         content = "content in the file is : " + file.read().decode()
-#         return content
-#     elif file.content_type in ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel']:
-#         df = pd.read_excel(file, engine='openpyxl')
-#         print("DataFrame Content:\n", df)
-#         return df.to_html()
-
-
 @app.route('/file_upload', methods=['POST'])
 def file_upload():
     file = request.files['file']
@@ -207,6 +192,12 @@ def handle_post():
         f.write(f'{greetings}, {name}')
 
     return jsonify({'message': 'Successfully written'})
+
+
+# static files and bootstrap
+@app.route('/static_files')
+def static_files():
+    return render_template('staticFiles.html')
 
 
 if __name__ == '__main__':
