@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %} session_cookies {% endblock %}
+
+{% block content %}
+
+<p>{{ msg }}</p>
+<a href="{{ url_for('set_data') }}">set session data</a>
+<a href="{{ url_for('get_data') }}">get session data</a>
+
+{% endblock %}

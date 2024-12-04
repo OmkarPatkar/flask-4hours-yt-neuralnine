@@ -3,13 +3,13 @@ import uuid
 
 import pandas as pd
 from flask import Flask, request, make_response, render_template, redirect, url_for, Response, send_from_directory, \
-    jsonify
+    jsonify, session
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
 
 
 # simple route
-@app.route('/hello')
+@app.route('/')
 def hello():
     return 'hello people!\n'
 
@@ -198,6 +198,35 @@ def handle_post():
 @app.route('/static_files')
 def static_files():
     return render_template('staticFiles.html')
+
+
+# session-server side
+# session data is sensitive and should not be accessed or seen by the user.
+
+# cookies-client side
+app.secret_key = 'SECRET'
+
+
+@app.route('/set_get_session_page')
+def set_session_page():
+    return render_template('set_get_session_page.html', msg='session data setting page')
+
+
+@app.route('/set_data')
+def set_data():
+    session['name'] = 'tand'
+    session['greet'] = 'yoooooo!'
+    return render_template('set_get_session_page.html', msg='session data is set.')
+
+
+@app.route('/get_data')
+def get_data():
+    if 'name' in session.keys() and 'greet' in session.keys():
+        name = session['name']
+        greet = session['greet']
+        return render_template('set_get_session_page.html', msg=f'name: {name}, greet: {greet}')
+    else:
+        return render_template('set_get_session_page.html', msg=f'No session data found.')
 
 
 if __name__ == '__main__':
