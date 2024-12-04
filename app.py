@@ -200,6 +200,7 @@ def static_files():
     return render_template('staticFiles.html')
 
 
+# http is stateless, which means request and response don't have a state that keeps track of overall exchange.
 # session-server side
 # session data is sensitive and should not be accessed or seen by the user.
 
@@ -227,6 +228,36 @@ def get_data():
         return render_template('set_get_session_page.html', msg=f'name: {name}, greet: {greet}')
     else:
         return render_template('set_get_session_page.html', msg=f'No session data found.')
+
+
+@app.route('/clear_session')
+def clear_session():
+    session.clear()
+    return render_template('set_get_session_page.html', msg='Session data cleared.')
+
+
+# cookies
+@app.route('/set_cookie')
+def set_cookie():
+    response = make_response(render_template('set_get_session_page.html', msg='Cookie set.'))
+    response.set_cookie('cookie_name', 'cookie_value1')
+    return response
+
+
+@app.route('/get_cookie')
+def get_cookie():
+    if 'cookie_name' in request.cookies:
+        cookie_value = request.cookies['cookie_name']
+        return render_template('set_get_session_page.html', msg=f'cookie value : {cookie_value}')
+    else:
+        return render_template('set_get_session_page.html', msg=f'cookie value not found.')
+
+
+@app.route('/remove_cookie')
+def remove_cookie():
+    response = make_response(render_template('set_get_session_page.html', msg='Cookie removed.'))
+    response.set_cookie('cookie_name', expires=0)
+    return response
 
 
 if __name__ == '__main__':

@@ -5,7 +5,12 @@
 {% block content %}
 
 <p>{{ msg }}</p>
-<a href="{{ url_for('set_data') }}">set session data</a>
-<a href="{{ url_for('get_data') }}">get session data</a>
+<a href="{{ url_for('set_data') }}">set session data</a><br>
+<a href="{{ url_for('get_data') }}">get session data</a><br>
+<a href="{{ url_for('clear_session') }}">clear session data</a><br>
+
+<a href="{{ url_for('set_cookie') }}">set cookie</a><br>
+<a href="{{ url_for('get_cookie') }}">get cookie</a><br>
+<a href="{{ url_for('remove_cookie') }}">remove cookie</a><br>
 
 {% endblock %}
