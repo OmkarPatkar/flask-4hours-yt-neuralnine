@@ -3,7 +3,7 @@ import uuid
 
 import pandas as pd
 from flask import Flask, request, make_response, render_template, redirect, url_for, Response, send_from_directory, \
-    jsonify, session
+    jsonify, session, flash
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
 
@@ -255,9 +255,28 @@ def get_cookie():
 
 @app.route('/remove_cookie')
 def remove_cookie():
-    response = make_response(render_template('set_get_session_page.html', msg='Cookie removed.'))
-    response.set_cookie('cookie_name', expires=0)
-    return response
+    if 'cookie_name' in request.cookies:
+        response = make_response(render_template('set_get_session_page.html', msg='Cookie removed.'))
+        response.set_cookie('cookie_name', expires=0)
+        return response
+    else:
+        return render_template('set_get_session_page.html', msg=f'cookies not present to remove.')
+
+
+# flash message
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        user = request.form.get('username')
+        passwd = request.form.get('password')
+        if user == 'abc' and passwd == 'qwe':
+            flash('Successful Login')
+            return render_template('set_get_session_page.html', msg='')
+        else:
+            flash('Login Failed')
+            return render_template('set_get_session_page.html', msg='')
 
 
 if __name__ == '__main__':
